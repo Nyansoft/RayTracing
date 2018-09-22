@@ -33,8 +33,7 @@ public class RenderLifeTracker extends Render<EntityLifeTracker>
 		BufferBuilder bufferBuilder = tessellator.getBuffer();
 		GlStateManager.pushMatrix();
 		this.bindTexture(Localizations.LIFETRACKERTEXTURE);
-//		float f1 = (float)(Minecraft.getSystemTime() % (Math.PI * 2000)) / 2000;
-//        GlStateManager.translate(0.0F, MathHelper.sin(f1) / 3, 0.0F);
+        
 		GlStateManager.translate(0, 0.25, 0);
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(x, y, z);
@@ -50,7 +49,11 @@ public class RenderLifeTracker extends Render<EntityLifeTracker>
 	{
 		GlStateManager.pushMatrix();
 		GlStateManager.disableTexture2D();
-		float lenght = 5f;
+		float lenght;
+		
+		if(entity.trackingEntity != null) lenght = entity.trackingEntity.getDistance(entity) - 0.25F;
+		else lenght = 0;
+		
 		bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 		bufferBuilder.pos(x, y, z).color(1F, 0F, 0F, 1F).endVertex();
 		bufferBuilder.pos(x + (entity.getLookVec().x * lenght), y + (entity.getLookVec().y * lenght), z + (entity.getLookVec().z * lenght)).color(1F, 0F, 0F, 1F).endVertex();
@@ -83,7 +86,23 @@ public class RenderLifeTracker extends Render<EntityLifeTracker>
 		GlStateManager.pushMatrix();
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
-		GlStateManager.color(0F, 1F, 0F);
+		
+		float f0;
+		float f1;
+		
+		if(entity.isHealing()) 
+		{
+			f0 = 0F;
+			f1 = 1F;
+		}
+		
+		else
+		{
+			f0 = 1F;
+			f1 = 0F;
+		}
+			
+		GlStateManager.color(f0, f1, 0F);
 		float f4 = 0.0625F;
 		GlStateManager.translate(f4 * 3, 0, f4 * 3);
 		GlStateManager.rotate(entity.ticksExisted, 0, 1, 0);

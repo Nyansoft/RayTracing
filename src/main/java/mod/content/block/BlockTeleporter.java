@@ -79,7 +79,7 @@ public class BlockTeleporter extends BlockBaseContainer
     		
     		else
     		{
-    			playerIn.openGui(ModBase.instance, 0, worldIn, pos.getX(), pos.getY(), pos.getZ());
+    			GuiOpenHelper.openGui(playerIn, worldIn, pos, GuiOpenHelper.TELEPORTER);
     		}
         }
 

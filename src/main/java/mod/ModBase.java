@@ -1,10 +1,14 @@
 package mod;
 
+import org.lwjgl.input.Keyboard;
+
 import mod.handler.ModGuiHandler;
 import mod.initialization.ModBlocks;
 import mod.initialization.ModEntities;
 import mod.initialization.ModItems;
 import mod.proxy.IProxy;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -14,6 +18,8 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import net.minecraftforge.fml.relauncher.Side;
 
 @Mod(modid = ModBase.MODID, name = ModBase.NAME, version = ModBase.VERSION)
 public class ModBase
@@ -29,12 +35,15 @@ public class ModBase
     @SidedProxy(clientSide = "mod.proxy.ClientProxy", serverSide = "mod.proxy.ServerProxy")
     public static IProxy proxy;
 
+    public static final SimpleNetworkWrapper INSTANCE = NetworkRegistry.INSTANCE.newSimpleChannel(ModBase.MODID);
+    
     @EventHandler
     public void preInit(FMLPreInitializationEvent event)
     {
         new ModItems().registerAll();
         new ModBlocks().registerAll();
         new ModEntities().registerAll();
+        
         proxy.preInit();
     }
 
@@ -42,6 +51,9 @@ public class ModBase
     public void init(FMLInitializationEvent event)
     {
     	NetworkRegistry.INSTANCE.registerGuiHandler(this, new ModGuiHandler());
+    	INSTANCE.registerMessage(SendLifeTrackerMessageHandler.class, SendLifeTrackerMessage.class, 0, Side.SERVER);
+    	
+    	INSTANCE.registerMessage(SendKeysToMLGMessageHandler.class, SendKeysToMLGMessage.class, 1, Side.SERVER);
     	proxy.init();
     }
     

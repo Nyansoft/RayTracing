@@ -1,37 +1,56 @@
 package mod.event;
 
-import java.util.List;
-
-import org.lwjgl.opengl.GL11;
-
 import mod.ModBase;
-import mod.content.entity.EntityTranslaterStatic;
+import mod.SendKeysToMLGMessage;
+import mod.content.entity.EntityMobileLaserGenerator;
+import mod.proxy.ClientProxy;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Gui;
-import net.minecraft.client.multiplayer.WorldClient;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.common.gameevent.InputEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 
-@Mod.EventBusSubscriber(modid=ModBase.MODID, value=Side.CLIENT)
-public class EventHandler extends Gui
+@Mod.EventBusSubscriber(modid=ModBase.MODID)
+public class EventHandler
 {
-	
 	@SubscribeEvent
 	public static void draw(RenderGameOverlayEvent event)
 	{
 		Minecraft mc = Minecraft.getMinecraft();
 	}
 	
+	@SubscribeEvent
+	public static void inputEvent(ClientTickEvent event)
+	{
+		if(event.phase == Phase.END)
+		{
+			Minecraft minecraft = Minecraft.getMinecraft();
+			EntityPlayer player = minecraft.player;
+			
+			if(ClientProxy.SPACE.isKeyDown())
+			{
+				if(player.isRiding())
+				{
+					if(player.getRidingEntity() != null && player.getRidingEntity() instanceof EntityMobileLaserGenerator)
+					{
+						ModBase.INSTANCE.sendToServer(new SendKeysToMLGMessage(((EntityMobileLaserGenerator)player.getRidingEntity()).getEntityId(), ClientProxy.SPACE.isKeyDown(), ClientProxy.A.isKeyDown(), ClientProxy.S.isKeyDown(), ClientProxy.D.isKeyDown(), ClientProxy.W.isKeyDown()));
+					}
+				}
+			}
+		}
+	}
+	
+	@SubscribeEvent
+	public static void mouseEvent(MouseEvent event)
+	{
+		
+	}
 	
 	@SubscribeEvent
 	public static void renderWorldLast(RenderWorldLastEvent event)

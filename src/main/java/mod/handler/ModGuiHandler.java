@@ -2,6 +2,7 @@ package mod.handler;
 
 import mod.container.ContainerTeleporter;
 import mod.content.tile.TileEntityTeleporter;
+import mod.gui.GuiLifeTracker;
 import mod.gui.GuiTeleporter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

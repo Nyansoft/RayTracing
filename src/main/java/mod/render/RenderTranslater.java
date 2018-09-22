@@ -85,37 +85,6 @@ public class RenderTranslater extends Render<Entity>
 				}
 				
 				GlStateManager.translate(0.0D, 0.0625D, 0D);
-				
-				GlStateManager.pushMatrix();
-				GlStateManager.disableCull();
-				GlStateManager.disableDepth();
-				GlStateManager.rotate(-this.getRenderManager().playerViewY, 0, 1, 0);
-				GlStateManager.rotate(this.getRenderManager().playerViewX, 1, 0, 0);
-				final float u = 52f;
-				final float v = 20f;
-				final float w = 12f;
-				final float h = 12f;
-				
-				float fu = u / 64f;
-				float fv = v / 32f;
-				
-				float ffu = (u + w) / 64f;
-				float ffv = (v + h) / 32f;
-				
-				float distance = Minecraft.getMinecraft().player.getDistance(entity) / 2;
-				float fffu = (0.0625f * w);
-				float fffv = (0.0625f * h);
-				
-				Tessellator tessellator = Tessellator.getInstance();
-				BufferBuilder bufferBuilder = tessellator.getBuffer();
-				bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-				bufferBuilder.pos(0F - (fffu / 2), 0 - (fffv / 2), 0).tex(ffu, ffv).endVertex();
-				bufferBuilder.pos(0F - (fffu / 2), fffv - (fffv / 2), 0).tex(ffu, fv).endVertex();
-				bufferBuilder.pos(fffu -(fffu / 2), fffv - (fffv / 2), 0).tex(fu, fv).endVertex();
-				bufferBuilder.pos(fffu -(fffu / 2), 0 - (fffv / 2), 0).tex(fu, ffv).endVertex();
-				tessellator.draw();
-				GlStateManager.enableDepth();
-				GlStateManager.popMatrix();
 			}
 		}
 		

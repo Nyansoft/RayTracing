@@ -8,8 +8,8 @@ public class ItemBase extends Item
 {
 	public ItemBase(String string)
 	{
-		setUnlocalizedName(ModBase.MODID + ":" + string);
-		setRegistryName(ModBase.MODID, string);
+		setUnlocalizedName(string);
+		setRegistryName(string);
 		this.setCreativeTab(CreativeTabs.REDSTONE);
 	}
 }

@@ -2,6 +2,7 @@ package mod.initialization;
 
 import mod.ModBase;
 import mod.content.entity.EntityLifeTracker;
+import mod.content.entity.EntityMobileLaserGenerator;
 import mod.content.entity.EntityTranslater;
 import mod.content.entity.EntityTranslaterStatic;
 import net.minecraft.util.ResourceLocation;
@@ -16,6 +17,7 @@ public class ModEntities
 		register(EntityTranslater.class, "translater");
 		register(EntityTranslaterStatic.class, "translaterStatic");
 		register(EntityLifeTracker.class, "lifeTracker");
+		register(EntityMobileLaserGenerator.class, "mobilelasergenerator");
 	}
 	
 	private void register(Class cls, String name)
